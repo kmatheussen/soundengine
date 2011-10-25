@@ -1,0 +1,17 @@
+
+This is the sound engine from Hurtigmikser. Please
+don't change API or behaviour in ways which would
+break compatability with the Hurtigmikser. It would be a good
+thing to let them (and possible other programs)
+share the same source.
+
+In case changes has to be made which would affect
+the Hurtigmikser or other programs using this
+sound engine, please send me an email.
+
+In case you don't have time to send me an email,
+at least add "if(using DSP) then" hacks as done
+in SoundObject.java.
+
+
+-Kjetil, 2009-01-13
