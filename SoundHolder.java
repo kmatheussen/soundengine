@@ -284,7 +284,9 @@ public class SoundHolder{
 	    }catch(IOException e){		
 		//Warning.print("Could not create soundfile.",e);
 		return addSound_failed(fileName,"Klarer ikke lage lydfil (2). Er harddisken full? ("+e.getMessage()+")",e);
-	    }
+	    }catch(Exception e){
+		return addSound_failed(fileName,"Soundfile seems corrupt.\n Lydfila virker korrupt.\n ("+e.getMessage()+")",e);
+            }
 	}
 	
 	synchronized(audioFileInfos){
