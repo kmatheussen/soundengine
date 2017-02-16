@@ -28,6 +28,13 @@ public class SoundHolder{
 			( data[start] & 0xff ) );
     }
 
+    short byteToShort_be( final byte[] data, final int start ) {
+        return (short) (
+			( ( data[start] & 0xff ) << 8 )
+			|
+			( data[start + 1] & 0xff ) );
+    }
+
 
 
     boolean ret=false;
@@ -189,6 +196,7 @@ public class SoundHolder{
 	TempFile tempFiles[]=new TempFile[nChannels];
 	Peaks[] peaks=new Peaks[nChannels];
 	{
+            //System.out.println("*** Part 1\n");
 	    for(int ch=0;ch<nChannels;ch++){
 
 		try {
@@ -203,11 +211,13 @@ public class SoundHolder{
 					   e2.getMessage()+")",e2);
 		}
 		tempNames[ch]=tempFiles[ch].name;
-		System.out.println("SoundHolder.addLyd, temporary audio file : " + tempNames[ch]);
+		//System.out.println("SoundHolder.addLyd, temporary audio file : " + tempNames[ch]);
 
 		peaks[ch]=new Peaks();
 	    }
 	    
+
+            //System.out.println("*** Part 2\n");
 
 	    int bufferSize=1024;
 	    int bytestoread=2*nChannels*bufferSize;
@@ -221,6 +231,8 @@ public class SoundHolder{
 	    try{
 		while(true){
 		    int numread=din.read(b,0,bytestoread);
+                    //System.out.println("*** Part 3\n"+numread);
+
 		    if(numread==-1)
 			break;
 
@@ -278,6 +290,7 @@ public class SoundHolder{
 		    }
 
 		}
+                //System.out.println("*** Part 4\n");
 		for(int ch=0;ch<nChannels;ch++){
 		    peaks[ch].close();
 		}
@@ -288,13 +301,20 @@ public class SoundHolder{
 		return addSound_failed(fileName,"Soundfile seems corrupt.\n Lydfila virker korrupt.\n ("+e.getMessage()+")",e);
             }
 	}
+
+        //System.out.println("*** Part 5\n");
 	
 	synchronized(audioFileInfos){
 	    audioFileInfos.put(fileName,new AudioFileInfo(fileName,nChannels,nFrames,srate,tempNames,tempFiles,peaks));
 	}
+
+        //System.out.println("*** Part 6\n");
+
 	synchronized(audiosBeingDownloaded){
 	    audiosBeingDownloaded.remove(fileName);
 	}
+
+        //System.out.println("*** Part 7\n");
 
 	try{
 	    din.close();
@@ -302,6 +322,8 @@ public class SoundHolder{
 	}catch(java.io.IOException e){
 	    Warning.print("Could not close file",e);
 	}
+
+        //System.out.println("*** Part 8\n");
 
 	return true;
     }

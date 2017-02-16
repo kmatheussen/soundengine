@@ -84,8 +84,10 @@ public class DasMixer extends MyPlayer{
     //////////////////////////////////////////////////////////////////////
 
     LinkedList<Message> readyMessages=new LinkedList<Message>();
+    //LinkedList readyMessages=new LinkedList();
     int freedMessagesLength=0;
     LinkedList<Message> freedMessages=new LinkedList<Message>();
+    //LinkedList freedMessages=new LinkedList();
     
     public Message getMessage(){
 	Message ret;
@@ -103,6 +105,7 @@ public class DasMixer extends MyPlayer{
 	    if(freedMessagesLength>0){
 		readyMessages.addAll(freedMessages);
 		freedMessages=new LinkedList<Message>();
+		//freedMessages=new LinkedList();
 		freedMessagesLength=0;
 	    }
 	}

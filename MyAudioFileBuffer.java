@@ -1,7 +1,5 @@
 
 import java.lang.*;
-import jass.render.*;
-import jass.generators.*;
 import java.net.*;
 import java.awt.*;
 import java.io.*;
@@ -14,6 +12,8 @@ import org.tritonus.sampled.convert.*;
 
 import javax.swing.*;
 
+import jass.render.*;
+import jass.generators.*;
 
 public class MyAudioFileBuffer{
 
@@ -31,11 +31,17 @@ public class MyAudioFileBuffer{
 
     boolean updatePeaks = true;
 
+    static short byteToShort( final byte[] data, final int start ) {
+        return (short) (
+			( ( data[start + 1] & 0xff ) << 8 )
+			|
+			( data[start] & 0xff ) );
+    }
 
     static final public  void byteToFloatReverse(float [] dbuf, byte[] bbuf,int bufsz) {
         int ib=(bufsz-1)*2;
 	for(int i=0;i<bufsz;i++) {
-	    short y=FormatUtils.byteToShort(bbuf,ib);
+	    short y=byteToShort(bbuf,ib);
 	    ib -= 2;
 	    dbuf[i] = y/32768.f;
 	}
@@ -207,7 +213,7 @@ public class MyAudioFileBuffer{
 		endPos=len;
 	    file.read(temp,0,(endPos-pos)*2);
 	    for(int i=pos;i<endPos;i++){
-		ret[i+retpos]=FormatUtils.byteToShort(temp,(i-pos)*2);
+		ret[i+retpos]=byteToShort(temp,(i-pos)*2);
 	    }
 	    pos=endPos;
 	}
@@ -308,7 +314,7 @@ public class MyAudioFileBuffer{
 		byteToFloatReverse(buf,byteTempBuf,nFrames);
 	    else
                 FormatUtils.byteToFloat(buf,byteTempBuf,nFrames);
-	    
+ 
 	    /*
 	      
 	    audioFileInfo.tempFiles[ch].seek(start*2);
